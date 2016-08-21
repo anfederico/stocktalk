@@ -3,11 +3,3 @@
 * [Web Scraping](#Web Scraping)
   * [Twitter] (#Twitter)
   * [Stock Twits] (#Stock Twits)
-  * 
-  
-* [Learning Algorithms] (#Learning Algorithms)
- 
-
-
-
-###Python Packages

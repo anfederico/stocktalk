@@ -1,1 +1,1 @@
-# Stock-Talk
+## Stock Talk Documentation

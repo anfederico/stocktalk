@@ -1,7 +1,3 @@
-
-# Stock Twits Developer Documents
-# http://stocktwits.com/developers/docs/api#streams-symbol-docs
-
 import urllib2
 import json
 import time

@@ -30,7 +30,7 @@ def GoogleNews(Query, Pages):
         Soup = BeautifulSoup(Response.text, "html.parser")
         
         # Scrape article titles
-        Title =  [a.get_text() for a in Soup.find_all("a", class_="_HId")]
+        Title  = [a.get_text() for a in Soup.find_all("a", class_="_HId")]
         Title += [a.get_text() for a in Soup.find_all("a", class_="_sQb")]
         for t in Title:
             Titles.append(t)

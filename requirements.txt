@@ -1,6 +1,5 @@
 re
 json
-urllib
 urllib2
 requests
 time

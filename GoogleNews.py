@@ -46,10 +46,7 @@ def GoogleNews(Query, Pages):
     
     return Titles, Links
     
-Titles, Links = GoogleNews('Barack Obama', 3)
-
-print Titles
-print Links
+#Titles, Links = GoogleNews('Barack Obama', 3)
 
 # For extracting article text from the links 
 # Needs some refinements: 

@@ -6,4 +6,5 @@ time
 random
 beautifulsoup
 nltk
+twython
 vader

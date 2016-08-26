@@ -119,3 +119,7 @@ def StockTwits(Ticker, Iterations = 1, Rest = 0): # Max 30 tweets per iteration,
                 for i in range(0, Support+1):
                     SentimentScores.append(Score)
     return round(sum(SentimentScores)/len(SentimentScores),3)
+
+####################################
+#           GoogleNews             #
+####################################

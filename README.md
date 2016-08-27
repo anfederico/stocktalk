@@ -3,3 +3,4 @@
 * [Web Scraping](#Web Scraping)
   * [Twitter] (#Twitter)
   * [Stock Twits] (#Stock Twits)
+* [Classification Comparison](#Classification Comparison)

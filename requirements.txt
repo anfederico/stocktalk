@@ -8,3 +8,5 @@ beautifulsoup
 nltk
 twython
 vader
+scikit learn
+numpy

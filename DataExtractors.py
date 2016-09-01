@@ -123,3 +123,5 @@ def StockTwits(Ticker, Iterations = 1, Rest = 0): # Max 30 tweets per iteration,
 ####################################
 #           GoogleNews             #
 ####################################
+
+

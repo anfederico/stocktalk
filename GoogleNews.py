@@ -45,23 +45,3 @@ def GoogleNews(Query, Pages):
         time.sleep(random.randint(5, 15))
     
     return Titles, Links
-    
-#Titles, Links = GoogleNews('Barack Obama', 3)
-
-# For extracting article text from the links 
-# Needs some refinements: 
-# 1. Some links give errors 
-# 2. Text is abour 90% pure body
-# 3. NLTK has trouble characterizing overall sentiment
-'''
-from newspaper import Article
-for link in links[0]:
-    A = Article(link)
-    A.download()
-    A.parse()
-    Paragraphs = (A.text).split('\n')
-    for P in Paragraphs:
-        if len(P) > 100: #Minimize percentage of non-body text
-            print P
-    print
-'''

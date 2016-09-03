@@ -11,3 +11,7 @@ vader
 scipy
 scikit learn
 numpy
+yahoofinance
+collections
+copy
+csv

@@ -9,3 +9,4 @@
    * Calculates momentum indicators based on past 14 trading periods, including:
      * Slow Stochastic Oscillator (SSO)
      * Relative Strength Index (RSI)
+    * Also records Daily Percent Change (DPC) and Daily Trading Volume (DTV)  

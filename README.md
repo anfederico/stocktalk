@@ -14,7 +14,7 @@
 ### Purpose
 
 The purpose of this repository is to provide two resources for predicting stock movement.
-These include:
+
 1. Calculating established momentum indicators with stock historical data.
 2. Scraping social media websites and analzying social sentiment for a particular stock.
 

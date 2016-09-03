@@ -35,10 +35,10 @@ def Twitter(Query, Amount = 100, Iterations = 1, Rest = 0): # Max 100 tweets per
                 SentimentScores.append(Score)
         return round(sum(SentimentScores)/len(SentimentScores),3)
     
-    ACCESS_TOKEN    = '3325237643-7tdg4mD7GLA5ylY2XsZI9h2CRophWJJZHEkyivk'
-    ACCESS_SECRET   = 'gb6TwH1STRGNWMxUWSo42q6V6Ed7CaKS9FPQq4TIyRf6Q'
-    CONSUMER_KEY    = 'FAu8rlIKWtQ27k0SkeEQx1MWm'
-    CONSUMER_SECRET = 'VNHrKtsJWhyAkmFsErHNFanYEXguEz9LSFyTuoEkcyy5LyvCLv'
+    ACCESS_TOKEN    = 'XXXXXXXXXXXXXXXXXXXXXXXXXX'
+    ACCESS_SECRET   = 'XXXXXXXXXXXXXXXXXXXXXXXXXX'
+    CONSUMER_KEY    = 'XXXXXXXXXXXXXXXXXXXXXXXXXX'
+    CONSUMER_SECRET = 'XXXXXXXXXXXXXXXXXXXXXXXXXX'
     auth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
     Credentials = TWTR(auth=auth)
     

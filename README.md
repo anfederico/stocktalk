@@ -18,4 +18,4 @@ The purpose of this repository is to provide two resources for predicting stock 
 1. Calculating established momentum indicators with stock historical data.
 2. Scraping social media websites and analzying social sentiment for a particular stock.
 
-Combinations of these tools can lead to substancial data that can be fed to machine learning classification algorithms.
+Using these tools can provide substancial raw data that can be fed to machine learning classification algorithms.

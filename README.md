@@ -6,6 +6,6 @@
 
 * StockHistoricals.py
    * Pulls stock historical values from Yahoo Finance
-   * Calculates momentum indicators based on past 14 trading peroids, including:
+   * Calculates momentum indicators based on past 14 trading periods, including:
      * Slow Stochastic Oscillator (SSO)
      * Relative Strength Index (RSI)

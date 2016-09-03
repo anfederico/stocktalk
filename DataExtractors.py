@@ -165,7 +165,7 @@ def GoogleNews(Query, Pages):
                 Titles.append(t)
         
             # Look like a user scrolling through links
-            time.sleep(random.randint(1, 2))
+            time.sleep(random.randint(5, 10))
             
         return Titles    
     
@@ -176,5 +176,3 @@ def GoogleNews(Query, Pages):
         if Score != 0:
             SentimentScores.append(Score) 
     return round(sum(SentimentScores)/len(SentimentScores),3)
-
-print GoogleNews('Barack Obama', 3)

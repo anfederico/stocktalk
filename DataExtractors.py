@@ -8,17 +8,7 @@ import json
 import re
 import time
 
-# Credentials to access Twitter API 
-# ACCESS_TOKEN    = 'XXXXXXXXXXXXXXXXXXXXXXX'
-# ACCESS_SECRET   = 'XXXXXXXXXXXXXXXXXXXXXXX'
-# CONSUMER_KEY    = 'XXXXXXXXXXXXXXXXXXXXXXX'
-# CONSUMER_SECRET = 'XXXXXXXXXXXXXXXXXXXXXXX'
-
-# Initiate the connection to Twitter Streaming API
-# auth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-# Credentials = TWTR(auth=auth)
-
-def Twitter(Credentials, Query, Amount, Iterations = 1, Rest = 0): # Max 30 tweets per iteration, rest between each iteration
+def Twitter(Query, Amount = 100, Iterations = 1, Rest = 0): # Max 100 tweets per iteration, rest between each iteration
 
     def Twitter_Stream(Query, Amount, Storage):
         Iterator = Credentials.search.tweets(q=Query, result_type='recent', lang='en', count=Amount)
@@ -40,18 +30,23 @@ def Twitter(Credentials, Query, Amount, Iterations = 1, Rest = 0): # Max 30 twee
         SentimentScores = []
         for Tweet in Tweets:
             Tweet = Twitter_Filter(Tweet)
-            print Tweet
             Score = SentimentIntensityAnalyzer().polarity_scores(Tweet)['compound']
             if Score != 0:
                 SentimentScores.append(Score)
         return round(sum(SentimentScores)/len(SentimentScores),3)
     
+    ACCESS_TOKEN    = '3325237643-7tdg4mD7GLA5ylY2XsZI9h2CRophWJJZHEkyivk'
+    ACCESS_SECRET   = 'gb6TwH1STRGNWMxUWSo42q6V6Ed7CaKS9FPQq4TIyRf6Q'
+    CONSUMER_KEY    = 'FAu8rlIKWtQ27k0SkeEQx1MWm'
+    CONSUMER_SECRET = 'VNHrKtsJWhyAkmFsErHNFanYEXguEz9LSFyTuoEkcyy5LyvCLv'
+    auth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
+    Credentials = TWTR(auth=auth)
+    
     Tweets = {}
-    Loops = 1
-    while Loops > 0:
+    while Iterations > 0:
         Twitter_Stream(Query, Amount, Tweets)
         time.sleep(0)
-        Loops -= 1
+        Iterations -= 1
     return Twitter_Sentiment(Tweets)
 
 ####################################
@@ -130,9 +125,7 @@ import requests
 import time
 import random
 
-# There are three parts to the URL when you search google news by recent 
-# 1. Query / 2. Query / 3. Page number (0, 10, 20, 30,...)
-def GoogleNews(Query, Pages):
+def GoogleNews(Query, Pages = 1, Rest = 0): # Limit to 10 Pages, rest between each page
 
     def CreateURLs(Query, Pages):
         URLs = []
@@ -145,31 +138,22 @@ def GoogleNews(Query, Pages):
             URLs.append(url)
         return URLs
    
-    def GoogleNews_Stream(Query, Pages):
-        # Create URLs
+    def GoogleNews_Stream(Query, Pages, Rest = 0):
         URLs = CreateURLs(Query, Pages)
-        # Pretend to be a web broswer
         headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'}
-        # Extract titles and links
         Titles = []
         Links = []
         for url in URLs:
-            # Request response / HTML parser
             Response = requests.get(url, headers=headers)
             Soup = BeautifulSoup(Response.text, "html.parser")
-            
-            # Scrape article titles
             Title =  [a.get_text() for a in Soup.find_all("a", class_="_HId")]
             Title += [a.get_text() for a in Soup.find_all("a", class_="_sQb")]
             for t in Title:
                 Titles.append(t)
-        
-            # Look like a user scrolling through links
-            time.sleep(random.randint(5, 10))
-            
+            time.sleep(random.randint(Rest/2, Rest))
         return Titles    
     
-    Titles = GoogleNews_Stream(Query, Pages)    
+    Titles = GoogleNews_Stream(Query, Pages, 10)    
     SentimentScores = []
     for Title in Titles:
         Score = SentimentIntensityAnalyzer().polarity_scores(Title)['compound']

@@ -12,3 +12,10 @@
     * Also records Daily Percent Change (DPC) and Daily Trading Volume (DTV)  
 
 ### Purpose
+
+The purpose of this repository is to provide two resources for predicting stock movement.
+These include:
+1. Calculating established momentum indicators with stock historical data.
+2. Scraping social media websites and analzying social sentiment for a particular stock.
+
+Combinations of these tools can lead to substancial data that can be fed to machine learning classification algorithms.

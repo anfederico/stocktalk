@@ -5,3 +5,7 @@
    * Records data in a log called SocialSentimentLog.txt
 
 * StockHistoricals.py
+   * Pulls stock historical values from Yahoo Finance
+   * Calculates momentum indicators based on past 14 trading peroids, including:
+     * Slow Stochastic Oscillator (SSO)
+     * Relative Strength Index (RSI)

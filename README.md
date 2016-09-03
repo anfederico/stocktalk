@@ -1,3 +1,5 @@
 ## Stock Talk Documentation
 * StockTalk.py
-   * This file is in example of how to use the social media anyl
+   * Extract sentiment values from Twitter, StockTwits, and Google News simultaneously 
+   * Pulls from three main functions defined in DataExtractors.txt
+   * Records data in a log called Sentiment

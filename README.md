@@ -10,3 +10,5 @@
      * Slow Stochastic Oscillator (SSO)
      * Relative Strength Index (RSI)
     * Also records Daily Percent Change (DPC) and Daily Trading Volume (DTV)  
+
+### Purpose

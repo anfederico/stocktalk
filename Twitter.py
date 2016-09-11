@@ -5,28 +5,28 @@ import re
 import time
 
 '''
-    Args:
-        1. Credentials(arr): Use OAuth and TWTR (Renamed from Twitter API to avoid conflict)
-            Ex. ACCESS_TOKEN    = 'XXXXXXXXXXXXXXX'
-                ACCESS_SECRET   = 'XXXXXXXXXXXXXXX'
-                CONSUMER_KEY    = 'XXXXXXXXXXXXXXX'
-                CONSUMER_SECRET = 'XXXXXXXXXXXXXXX'
-                Auth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-                Credentials = TWTR(auth=Auth)
-        2. Query(str): You are search tweets based on this keyword(s)
-        3. Amount(int): Number of tweets you want to search per iteration
-            Default = 100
-            Max = 100
-        4. Iterations(int): Number of times you want to request the Amount of tweets from Twitter
-            Default = 1
-        5. Rest(int): Number of seconds you want to wait between each iteration
-            Default = 0
-            
-    Assumptions:
-        Tweets are sorted by recent and english
-    
-    Returns:
-        int: Sentiment score based on tweets
+Args:
+    1. Credentials(arr): Use OAuth and TWTR (Renamed from Twitter API to avoid conflict)
+        Ex. ACCESS_TOKEN    = 'XXXXXXXXXXXXXXX'
+            ACCESS_SECRET   = 'XXXXXXXXXXXXXXX'
+            CONSUMER_KEY    = 'XXXXXXXXXXXXXXX'
+            CONSUMER_SECRET = 'XXXXXXXXXXXXXXX'
+            Auth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
+            Credentials = TWTR(auth=Auth)
+    2. Query(str): You are search tweets based on this keyword(s)
+    3. Amount(int): Number of tweets you want to search per iteration
+        Default = 100
+        Max = 100
+    4. Iterations(int): Number of times you want to request the Amount of tweets from Twitter
+        Default = 1
+    5. Rest(int): Number of seconds you want to wait between each iteration
+        Default = 0
+        
+Assumptions:
+    Tweets are sorted by recent and english
+
+Returns:
+    int: Sentiment score based on tweets
 '''
 
 def Twitter(Credentials, Query, Amount = 100, Iterations = 1, Rest = 0):

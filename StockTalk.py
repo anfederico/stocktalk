@@ -1,19 +1,25 @@
 import time
-from Twitter import Twitter
-from DataExtractors StockTwits, GoogleNews
+import sys
+sys.path.insert(0, '/Scrapers')
+from TwitterScrape    import TW_Scrape
+from StockTwitsScrape import ST_Scrape
+from GoogleNewsScrape import GN_Scrape
 
 # Request 100 (max) tweets from Twitter each iteration
 # Input rest (sec) between each iteration
-# Edit API credentials in Twitter.py
-TW_Sentiment = Twitter(Credentials, Query = '$TSLA', Iterations = 5, Rest = 60)
+# Credentials not shown, see TwitterScrape.py for setup example
 
-# Request 30 (max) twits from StockTwiters each iteration
+TW_Sentiment = TW_Scrape(Credentials, Query = '$TSLA', Iterations = 1, Rest = 0)
+
+# Request 30 (max) twits from Stock Twits each iteration
 # Input rest (sec) between each iteration
-ST_Sentiment = StockTwits(Ticker = 'TSLA', Iterations = 1, Rest = 0)
 
-# Request 10 (limit) pages of news headlines from Google News
+ST_Sentiment = ST_Scrape(Ticker = 'TSLA', Iterations = 1, Rest = 0)
+
+# Request pages of news headlines from Google News
 # Input rest (sec) between each page
-GN_Sentiment = GoogleNews('Tesla Motors', Pages = 5, Rest = 10)
+
+GN_Sentiment = GN_Scrape('Tesla Motors', Pages = 1, Rest = 0)
 
 outfile = open('SocialSentimentLog.txt', 'a')
 outfile.write(time.strftime("%m/%d/%Y %H:%M ")+

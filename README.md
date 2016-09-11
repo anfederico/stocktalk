@@ -4,18 +4,6 @@
    * Pulls from three main functions defined in DataExtractors.py
    * Records data in a log called SocialSentimentLog.txt
 
-* StockHistoricals.py
-   * Pulls stock historical values from Yahoo Finance
-   * Calculates momentum indicators based on past 14 trading periods, including:
-     * Slow Stochastic Oscillator (SSO)
-     * Relative Strength Index (RSI)
-    * Also records Daily Percent Change (DPC) and Daily Trading Volume (DTV)  
-
 ### Purpose
 
-The purpose of this repository is to provide two resources for predicting stock movement.
-
-1. Calculating established momentum indicators with stock historical data.
-2. Scraping social media websites and analzying social sentiment for a particular stock.
-
-Using these tools can provide substancial raw data that can be fed to machine learning classification algorithms.
+The purpose of this repository is to provide resources for craping social media websites and analzying social sentiment for a particular stock. Using these tools can provide substancial raw data that can be fed to machine learning clustering algorithms.

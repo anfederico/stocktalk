@@ -3,9 +3,9 @@
 ### StockTalk.py
    * Extracts sentiment values from Twitter, Stock Twits, and Google News simultaneously 
    * Pulls from three main functions
-    ** Twitter.py
-    ** GoogleNews.py
-    ** StockTwits.py
+      * Twitter.py
+      *GoogleNews.py
+      *StockTwits.py
    * Records data in a log called SocialSentimentLog.txt
 
 ### Purpose

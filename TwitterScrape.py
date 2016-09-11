@@ -13,7 +13,7 @@ Args:
             CONSUMER_SECRET = 'XXXXXXXXXXXXXXX'
             Auth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
             Credentials = Twitter(auth=Auth)
-    2. Query(str): You are search tweets based on this keyword(s)
+    2. Query(str): You are searching tweets based on this keyword(s)
     3. Amount(int): Number of tweets you want to search per iteration
         Default = 100
         Max = 100
@@ -28,6 +28,7 @@ Assumptions:
 Returns:
     int: Sentiment score based on tweets
 '''
+
 def TW_Scrape(Credentials, Query, Amount = 100, Iterations = 1, Rest = 0):
 
     # Connect to twitter with credentials and request tweets

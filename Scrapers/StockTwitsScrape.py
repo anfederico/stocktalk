@@ -43,7 +43,7 @@ def ST_Scrape(Ticker, Iterations = 1, Rest = 0):
         return Twits    
     
     # Filters spam and meaningless data
-    def StockTwits_Filter(text):
+    def StockTwitsFilter(text):
         text = re.sub("$[^\s]+", "", text)
         text = text.lower()
         text = re.sub("[0-9]+", "number", text)
@@ -64,7 +64,7 @@ def ST_Scrape(Ticker, Iterations = 1, Rest = 0):
                 elif Twit['Sentiment'] == 'Bearish':
                     SentimentScores += [-1]*Support
             else:
-                Twit = StockTwits_Filter(Twit['Text'])
+                Twit = StockTwitsFilter(Twit['Text'])
                 Score = SentimentIntensityAnalyzer().polarity_scores(Twit)['compound']
                 if Score != 0:
                     for i in range(0, Support+1):

@@ -1,10 +1,11 @@
 import time
-from DataExtractors import Twitter, StockTwits, GoogleNews
+from Twitter import Twitter
+from DataExtractors StockTwits, GoogleNews
 
 # Request 100 (max) tweets from Twitter each iteration
 # Input rest (sec) between each iteration
-# Edit API credentials in DataExtractors.py file
-TW_Sentiment = Twitter(Query = '$TSLA', Iterations = 5, Rest = 60)
+# Edit API credentials in Twitter.py
+TW_Sentiment = Twitter(Credentials, Query = '$TSLA', Iterations = 5, Rest = 60)
 
 # Request 30 (max) twits from StockTwiters each iteration
 # Input rest (sec) between each iteration

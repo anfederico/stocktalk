@@ -19,7 +19,7 @@ ST_Sentiment = ST_Scrape(Ticker = 'TSLA', Iterations = 1, Rest = 0)
 # Request pages of news headlines from Google News
 # Input rest (sec) between each page
 
-GN_Sentiment = GN_Scrape('Tesla Motors', Pages = 1, Rest = 0)
+GN_Sentiment = GN_Scrape(Query = 'Tesla Motors', Pages = 1, Rest = 0)
 
 outfile = open('SocialSentimentLog.txt', 'a')
 outfile.write(time.strftime("%m/%d/%Y %H:%M ")+

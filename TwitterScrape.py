@@ -1,4 +1,4 @@
-from twitter import Twitter as TWTR, OAuth
+from twitter import Twitter, OAuth
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import json
 import re
@@ -6,13 +6,13 @@ import time
 
 '''
 Args:
-    1. Credentials(arr): Use OAuth and TWTR (Renamed from Twitter API to avoid conflict)
+    1. Credentials(arr): Use OAuth and Twitter
         Ex. ACCESS_TOKEN    = 'XXXXXXXXXXXXXXX'
             ACCESS_SECRET   = 'XXXXXXXXXXXXXXX'
             CONSUMER_KEY    = 'XXXXXXXXXXXXXXX'
             CONSUMER_SECRET = 'XXXXXXXXXXXXXXX'
             Auth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-            Credentials = TWTR(auth=Auth)
+            Credentials = Twitter(auth=Auth)
     2. Query(str): You are search tweets based on this keyword(s)
     3. Amount(int): Number of tweets you want to search per iteration
         Default = 100
@@ -28,8 +28,7 @@ Assumptions:
 Returns:
     int: Sentiment score based on tweets
 '''
-
-def Twitter(Credentials, Query, Amount = 100, Iterations = 1, Rest = 0):
+def TW_Scrape(Credentials, Query, Amount = 100, Iterations = 1, Rest = 0):
 
     # Connect to twitter with credentials and request tweets
     def TwitterStream(Credentials, Query, Amount, Storage):
@@ -38,7 +37,7 @@ def Twitter(Credentials, Query, Amount = 100, Iterations = 1, Rest = 0):
             Storage[json.dumps(Tweet['text'])] = None
     
     # Filters spam and meaningless data
-    def Twitter_Filter(text):
+    def TwitterFilter(text):
         text = text.lower()
         text = re.sub("[0-9]+", "number", text)
         text = re.sub("rt", "", text)
@@ -49,11 +48,11 @@ def Twitter(Credentials, Query, Amount = 100, Iterations = 1, Rest = 0):
         text = re.sub("[^\s]+@[^\s]+", "", text)
         return text
     
-    # Analyze tweets with NLTK Sentiment Analyzer
-    def Twitter_Sentiment(Tweets):
+    # Analyze tweets with NLTK Sentiment Analzyer
+    def TwitterSentiment(Tweets):
         SentimentScores = []
         for Tweet in Tweets:
-            Tweet = Twitter_Filter(Tweet)
+            Tweet = TwitterFilter(Tweet)
             Score = SentimentIntensityAnalyzer().polarity_scores(Tweet)['compound']
             if Score != 0:
                 SentimentScores.append(Score)
@@ -65,4 +64,4 @@ def Twitter(Credentials, Query, Amount = 100, Iterations = 1, Rest = 0):
         TwitterStream(Credentials, Query, Amount, Tweets)
         time.sleep(0)
         Iterations -= 1
-    return Twitter_Sentiment(Tweets)
+    return TwitterSentiment(Tweets)

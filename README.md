@@ -29,4 +29,6 @@
     Records data in a log called SocialSentimentLog.txt
 
 ### Purpose
-    The purpose of this repository is to provide resources for scraping social media websites and analzying social sentiment for a particular stock. Using these tools can provide substancial raw data that can be fed to clustering algorithms.
+    The purpose of this repository is to provide resources to analyze stock market sentiment
+    Using these tools can provide substancial raw data that can be fed to classification algorithms
+    Check out my other project called Waldo for some examples

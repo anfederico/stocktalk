@@ -1,4 +1,15 @@
-## Stock Talk Documentation
+# Stock Talk Documentation
+<i>Software designed to scrape and analyze social media sentiment about particular stocks</i>
+
+### Python Requirements
+    csv
+    os
+    selenium
+    numpy
+    matplotlib
+    sklearn
+    
+### Stock Talk Documentation
 
 ### StockTalk.py
    * Extracts sentiment values from Twitter, Stock Twits, and Google News simultaneously 

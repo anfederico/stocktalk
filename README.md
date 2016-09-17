@@ -1,4 +1,4 @@
-# Stock Talk Documentation
+# Stock Talk <img src="https://github.com/anfederico/Stock-Talk/blob/master/Network.png" width="50"/>
 <i>Software designed to scrape and analyze social media sentiment about particular stocks</i>
 
 ### Python Requirements

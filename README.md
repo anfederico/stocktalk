@@ -2,11 +2,17 @@
 <br>
 [![Build Status](https://travis-ci.org/anfederico/Stocktalk.svg?branch=master)](https://travis-ci.org/anfederico/Stocktalk)
 
+## Install
+```python
+pip install stocktalk
+```
 ## Code Examples
 
 #### Mining Twitter
 
 ```python
+from stocktalk import TwitterAxe
+
 # Credentials to access Twitter API 
 ACCESS_TOKEN    = 'XXXXXXXXXX'
 ACCESS_SECRET   = 'XXXXXXXXXX'

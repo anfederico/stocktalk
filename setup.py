@@ -9,5 +9,6 @@ setup(
   url = 'https://github.com/anfederico/Stocktalk',
   download_url = 'https://github.com/anfederico/Stocktalk/tarball/v0.1',
   keywords = ['twitter', 'datamining', 'stock', 'analytics'],
+  license='MIT',
   classifiers = [],
 )

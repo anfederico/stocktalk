@@ -6,8 +6,8 @@ setup(
   description = 'Data collection toolkit for social media analytics',
   author = 'Anthony Federico',
   author_email = 'dephoona@gmail.com',
-  url = 'https://github.com/anfederico/Stocktalk', # use the URL to the github repo
-  download_url = 'https://github.com/peterldowns/mypackage/tarball/0.1', # I'll explain this in a second
+  url = 'https://github.com/anfederico/Stocktalk',
+  download_url = 'https://github.com/anfederico/Stocktalk/tarball/1.0',
   keywords = ['twitter', 'datamining', 'stock', 'analytics'],
   classifiers = [],
 )

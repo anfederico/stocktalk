@@ -2,10 +2,7 @@ language: python
 
 python:
   - "2.7"
-
-script:
-  - testaxe
-
+  
 deploy:
   provider: pypi
   user: anfederico

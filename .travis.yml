@@ -5,3 +5,12 @@ python:
 
 script:
   - testaxe
+
+deploy:
+  provider: pypi
+  user: anfederico
+  password:
+    secure: my_secure_password
+  on:
+    tags: true
+    branch: master

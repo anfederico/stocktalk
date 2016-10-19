@@ -7,7 +7,7 @@ setup(
   author = 'Anthony Federico',
   author_email = 'dephoona@gmail.com',
   url = 'https://github.com/anfederico/Stocktalk',
-  download_url = 'https://github.com/anfederico/Stocktalk/tarball/1.0',
+  download_url = 'https://github.com/anfederico/Stocktalk/tarball/v0.1',
   keywords = ['twitter', 'datamining', 'stock', 'analytics'],
   classifiers = [],
 )

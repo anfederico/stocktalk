@@ -2,7 +2,9 @@ language: python
 
 python:
   - "2.7"
-  
+
+script: make build
+
 deploy:
   provider: pypi
   user: anfederico
@@ -11,3 +13,4 @@ deploy:
   on:
     tags: true
     branch: master
+  

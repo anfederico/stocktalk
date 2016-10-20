@@ -6,6 +6,10 @@
 ```python
 pip install stocktalk
 ```
+## Download Corpus
+```python
+stocktalk-corpus
+```
 ## Code Examples
 
 #### Mining Twitter

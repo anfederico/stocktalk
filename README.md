@@ -9,6 +9,8 @@ pip install stocktalk
 ## Download Corpus
 ```python
 stocktalk-corpus
+or
+python -m nltk.downloader vader_lexicon
 ```
 ## Code Examples
 

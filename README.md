@@ -1,6 +1,5 @@
 <p align="center"><img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Stocktalk.png" width=60%></p>
 
-<br>
 [![Build Status](https://travis-ci.org/anfederico/Stocktalk.svg?branch=master)](https://travis-ci.org/anfederico/Stocktalk)
 
 ## Install

@@ -43,7 +43,7 @@ Mine complete from
 ```
 
 ```python
-# Some other methods
+# Methods to explore collected data
 axe.showInventory()
 axe.showUniqueTweets()
 axe.showFilteredTweets()

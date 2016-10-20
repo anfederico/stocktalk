@@ -41,9 +41,9 @@ axe.mine("Apple", minePeriod, requestFrequency, analyzeFrequency, requestAmount,
 Mine complete from
 [2016/10/14 02:37:16 PM] - [2016/10/14 02:42:26 PM]
 ```
+#### Explore Collected Data
 
 ```python
-# Methods to explore collected data
 axe.showInventory()
 axe.showUniqueTweets()
 axe.showFilteredTweets()
@@ -88,8 +88,9 @@ Time Series
 30  06:50:49 PM     -0.032     357
 31  07:00:53 PM     -0.011     330
 ```
+#### Visualize Sentiment Analysis
+
 ```python
-# Visualize the sentiment analysis
 axe.showPlot()
 ```
 <img src="https://github.com/anfederico/Stocktalk/blob/master/media/Plot.png"  width=60%>

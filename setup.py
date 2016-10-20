@@ -7,4 +7,5 @@ setup(name='stocktalk',
       author_email='dephoona@gmail.com',
       url='https://github.com/anfederico/Stocktalk/tarball/v0.1',
       packages=['stocktalk'],
+      scripts=['bin/stocktalk-corpus']
      )

@@ -5,7 +5,7 @@ setup(name='stocktalk',
       description='Data collection toolkit for social media analytics',
       author='Anthony Federico',
       author_email='dephoona@gmail.com',
-      url='https://github.com/anfederico/Stocktalk/tarball/v0.1',
+      url='https://github.com/anfederico/Stocktalk',
       packages=['stocktalk'],
       scripts=['bin/stocktalk-corpus']
      )

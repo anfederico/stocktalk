@@ -2,13 +2,13 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from twitter import Twitter, OAuth
-from datetime import datetime
-from matplotlib.dates import DateFormatter
-from csv import DictWriter
-from re import sub
-from pandas import DataFrame
-from time import time, gmtime, localtime, strftime, sleep
+from twitter              import Twitter, OAuth
+from datetime             import datetime
+from matplotlib.dates     import DateFormatter
+from csv                  import DictWriter
+from re                   import sub
+from pandas               import DataFrame
+from time                 import time, gmtime, localtime, strftime, sleep
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import schedule
 

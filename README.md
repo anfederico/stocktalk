@@ -1,8 +1,10 @@
 <p align="center"><img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Stocktalk.png" width=60%></p>
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![PyPI version](https://badge.fury.io/py/stocktalk.svg)](https://badge.fury.io/py/stocktalk)
 [![Build Status](https://travis-ci.org/anfederico/Stocktalk.svg?branch=master)](https://travis-ci.org/anfederico/Stocktalk)
 ![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
+[![GitHub Issues](https://img.shields.io/github/issues/anfederico/Stocktalk.svg)](https://github.com/anfederico/stocktalk/issues)
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
 [![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)
 

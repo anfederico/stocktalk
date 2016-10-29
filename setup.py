@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='stocktalk',
-      version='v0.5',
+      version='v0.6',
       description='Data collection toolkit for social media analytics',
       author='Anthony Federico',
       author_email='dephoona@gmail.com',

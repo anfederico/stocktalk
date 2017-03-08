@@ -10,6 +10,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Quickstart
+#### Track tweet volume and sentiment in realtime
 ```python
 from stocktalk import streaming, visualize
 
@@ -47,7 +48,6 @@ python -m nltk.downloader vader_lexicon
 
 ## Code Examples
 #### Twitter Streaming
-##### streaming.py
 ```python
 from stocktalk import streaming
 
@@ -77,7 +77,6 @@ realtime=True, logTracker=True, logTweets=True, logSentiment=True, debug=True)
 ```
 
 #### Realtime Visualization
-##### visualize.py
 ```python
 from stocktalk import visualize
 

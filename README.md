@@ -28,7 +28,7 @@ visualize('TSLA', 30, path)
 - [Major Features](#major-features)
 	* [Debugging Mode](#debugging-mode)
 	* [Tracker Log Format](#tracker-log-format)
-	* [Tweet Log Format](#tweet-log-format)
+	* [Tweets Log Format](#tweets-log-format)
 - [Underlying Features](#underlying-features)
 	* [Text Processing](#text-processing)
 	* [Sentiment Analysis](#sentiment-analysis)
@@ -135,7 +135,7 @@ datetime,volume,sentiment,duration
 03/01/2017 10:32:00,25,0.18,30
 ```
 
-##### Tweet Log Format
+##### Tweets Log Format
 ```text
 TSLA_Tweets.txt
 datetime,tweet,sentiment

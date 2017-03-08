@@ -13,7 +13,7 @@
 ```python
 from stocktalk import streaming, visualize
 
-streaming(credentials, 'TSLA', ['TSLA', 'Tesla'], 30, path, realtime=True)
+streaming(credentials, 'TSLA', ['TSLA', 'Tesla'], 30, path, realtime=True, logSentiment=True)
 visualize('TSLA', 30, path)
 ```
 

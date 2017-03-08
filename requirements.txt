@@ -1,0 +1,5 @@
+bokeh>=0.12.4
+nltk>=3.2.2
+tornado>=4.4.2
+tweepy>=3.5.0
+twython>=3.4.0

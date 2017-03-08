@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Design.png" width=60%></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Crypto-AI/Stocktalk/master/media/Design.png" width=60%></p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/anfederico/Stocktalk.svg?branch=master)](https://travis-ci.org/anfederico/Stocktalk)
 ![Python](https://img.shields.io/badge/python-v2.7%20%2F%20v3.6-blue.svg)
 ![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
-[![GitHub Issues](https://img.shields.io/github/issues/anfederico/Stocktalk.svg)](https://github.com/anfederico/stocktalk/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/Crypto-AI/Stocktalk.svg)](https://github.com/Crypto-AI/stocktalk/issues)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Quickstart
@@ -18,7 +18,7 @@ streaming(credentials, 'TSLA', ['TSLA', 'Tesla'], 30, path, realtime=True, logSe
 visualize('TSLA', 30, path)
 ```
 
-<img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Demo.gif" width=50%>
+<img src="https://raw.githubusercontent.com/Crypto-AI/Stocktalk/master/media/Demo.gif" width=50%>
 
 ## Content
 - [Install](#install)
@@ -97,7 +97,7 @@ Steps to run local bokeh server
 # Note: Volume is the thick blue line while sentiment is the thin white line
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Demo.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Crypto-AI/Stocktalk/master/media/Demo.png"></p>
 
 ## Major Features
 ##### Debugging Mode

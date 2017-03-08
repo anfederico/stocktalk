@@ -93,6 +93,8 @@ Steps to run local bokeh server
 2. Traverse in console to the directory containing visualize.py
 3. python -m bokeh serve --show visualize.py
 '''
+
+# Note: Volume is the thick blue line while sentiment is the thin white line
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Demo.png"></p>

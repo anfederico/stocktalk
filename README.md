@@ -17,7 +17,7 @@ streaming(credentials, 'TSLA', ['TSLA', 'Tesla'], 30, path, realtime=True)
 visualize('TSLA', 30, path)
 ```
 
-<img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Demo.gif" width=60%>
+<img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Demo.gif" width=50%>
 
 ## Content
 - [Install](#install)

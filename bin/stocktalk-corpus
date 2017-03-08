@@ -1,1 +1,0 @@
-python -m nltk.downloader vader_lexicon

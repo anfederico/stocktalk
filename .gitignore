@@ -1,0 +1,10 @@
+venv/*
+venv/
+env/
+env/*
+.DS_Store
+*.yaml
+*.egg-info/
+dist/
+priv_key
+__pycache__/

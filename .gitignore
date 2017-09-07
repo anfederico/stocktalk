@@ -8,3 +8,4 @@ env/*
 dist/
 priv_key
 __pycache__/
+Data/

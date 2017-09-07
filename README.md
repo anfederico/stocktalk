@@ -51,7 +51,7 @@ python -m nltk.downloader vader_lexicon
 ```python
 from stocktalk import streaming
 
-# Credentials to access Twitter API 
+# Credentials to access Twitter API
 API_KEY = 'XXXXXXXXXX'
 API_SECRET = 'XXXXXXXXXX'
 ACCESS_TOKEN = 'XXXXXXXXXX'
@@ -66,7 +66,7 @@ AMZN = ['AMZN', 'Amazon']
 
 # Variables
 tickers = [TSLA,SNAP,AAPL,AMZN]  # Used for identification purposes
-queries =  TSLA+SNAP+AAPL+AMZN   # Filters tweets containing one or more query 
+queries =  TSLA+SNAP+AAPL+AMZN   # Filters tweets containing one or more query
 refresh = 30                     # Process and log data every 30 seconds
 
 # Create a folder to collect logs and temporary files
@@ -143,8 +143,8 @@ datetime,tweet,sentiment
 03/01/2017 10:30:02,#Tesla zeroing in market with strong relations,0.54
 03/01/2017 10:30:03,$TSLA needs 8 Billion for Supercharger network,0.0
 03/01/2017 10:30:03,#Tesla grossing high yet still losing money,-0.32
-03/01/2017 10:30:03,Tesla's soon to be as affordable as gas-powered cars,0.11 
-03/01/2017 10:30:05,The technical reason why Tesla shares could soon rise,0.42 
+03/01/2017 10:30:03,Tesla's soon to be as affordable as gas-powered cars,0.11
+03/01/2017 10:30:05,The technical reason why Tesla shares could soon rise,0.42
 ```
 
 ## Underlying Features
@@ -153,7 +153,7 @@ datetime,tweet,sentiment
 textOne = "@TeslaMotors shares jump as shipments more than double! #winning"
 print(process(textOne))
 
-textTwo = "Tesla announces its best sales quarter: http://trib.al/RbTxvSu $TSLA" 
+textTwo = "Tesla announces its best sales quarter: http://trib.al/RbTxvSu $TSLA"
 print(process(textTwo))
 
 textThree = "Tesla $TSLA reports deliveries of 24500, above most views."
@@ -183,3 +183,8 @@ print(sentiment(textThree))
 0.077
 -0.341
 ```
+
+##### Kibana and Elasticsearch Integration
+
+![kibana_1](media/kibana_1.png)
+![kibana_2](media/kibana_1.png)

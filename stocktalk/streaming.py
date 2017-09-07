@@ -4,12 +4,20 @@ import copy
 import threading
 import codecs
 import tweepy
-from   tweepy.api import API
+from tweepy.api import API
 
 # Special Exceptions
 from requests.exceptions import Timeout
 from requests.exceptions import ConnectionError
 from requests.packages.urllib3.exceptions import ReadTimeoutError
+
+#elasticsearch stuff
+import pytz
+import ast
+from datetime import datetime
+import dateutil.parser
+from elasticsearch import Elasticsearch, RequestsHttpConnection, helpers
+
 
 def getTracker(coins):
     tracker = {'Volume':{},'Sentiment':{},'Seconds':0}
@@ -49,8 +57,8 @@ def process(text):
 
 class CoinListener(tweepy.StreamListener):
 
-    def __init__(self, auth, coins, queries, refresh, path, realtime=False, logTracker=True, logTweets=True, logSentiment=False, debug=True): 
-        
+    def __init__(self, auth, coins, queries, refresh, path, realtime=False, logTracker=True, logTweets=True, indexTweets=False, logSentiment=False, debug=True):
+
         self.api          = tweepy.API(auth)
         self.coins        = coins
         self.queries      = queries
@@ -58,13 +66,15 @@ class CoinListener(tweepy.StreamListener):
         self.path         = path
         self.realtime     = realtime
         self.logTracker   = logTracker
-        self.logTweets    = logTweets       
+        self.logTweets    = logTweets
         self.logSentiment = logSentiment
         self.debug        = debug
         self.processing   = False
         self.timer        = time.time()
         self.reversal     = getReversal(coins)
         self.tracker      = getTracker(coins)
+        self.es_client    = Elasticsearch(['localhost:9200'],connection_class=RequestsHttpConnection)
+        self.indexTweets  = indexTweets
 
         # Initiate file for visualization
         if self.realtime:
@@ -74,7 +84,7 @@ class CoinListener(tweepy.StreamListener):
         # Record timer and reset
         self.tracker['Seconds'] += elapsedTime(self.timer)
         self.timer = time.time()
-        
+
         # Copy tracking data to temporary tracker
         tempTracker = copy.deepcopy(self.tracker)
         self.tracker = getTracker(self.coins)
@@ -106,19 +116,19 @@ class CoinListener(tweepy.StreamListener):
         self.processing = False
 
     def on_status(self, status):
-        tweetOrgnl = status.text 
+        tweetOrgnl = status.text
         tweetLower = tweetOrgnl.lower()
 
         # For every incoming tweet...
         for query in self.queries:
             if query.lower() in tweetLower:
-                
+
                 # Categorize tweet
                 lookup = self.reversal[query]
 
                 # Increment count
                 self.tracker['Volume'][lookup] += 1
-                
+
                 # Sentiment analysis
                 if self.logSentiment:
                     tweetPrcsd = process(tweetLower)
@@ -128,8 +138,19 @@ class CoinListener(tweepy.StreamListener):
 
                 # Log tweet
                 if self.logTweets:
+
                     with codecs.open("%s%s_Tweets.txt" % (self.path, lookup), "a", encoding='utf8') as outfile:
                         outfile.write("%s,%s,%s\n" % (time.strftime('%m/%d/%Y %H:%M:%S'), tweetOrgnl, tweetScore))
+
+                if self.indexTweets:
+                    document = {
+                        'coin': lookup,
+                        'tweet': tweetPrcsd,
+                        'sentiment': tweetScore,
+                        'time': datetime.now(pytz.utc)
+                    }
+                    self.es_client.index(index='cryptosentiment', doc_type='tweet', body=document)
+
 
                 # Check refresh
                 if elapsedTime(self.timer) >= self.refresh:
@@ -138,25 +159,25 @@ class CoinListener(tweepy.StreamListener):
                         processingThread = threading.Thread(target=self.process)
                         processingThread.start()
         return True
- 
+
     def on_error(self, status_code):
         if status_code == 413 or status_code == 420 or status_code == 503:
             print("Got an error with status code: %d" % status_code)
             with open("%sError_Log.txt" % self.path, "a") as outfile:
-                outfile.write("%s Error: %d\n" % (time.strftime('%m/%d/%Y %H:%M'), status_code))    
+                outfile.write("%s Error: %d\n" % (time.strftime('%m/%d/%Y %H:%M'), status_code))
             return False
         print('Got an error with status code: %d' % status_code)
         return True # To continue listening
- 
+
     def on_timeout(self):
         print("Timeout...")
         return True # To continue listening
- 
 
- 
+
+
 # Streaming --------------------------------------------------
 
-def streaming(credentials, coins, queries, refresh, path, realtime=False, logTracker=True, logTweets=True, logSentiment=False, debug=True):
+def streaming(credentials, coins, queries, refresh, path, realtime=False, logTracker=True, logTweets=True, indexTweets=False, logSentiment=False, debug=True):
 
     # User Error Checks
     if len(coins)   <= 0:  print("Error: You must include at least one coin."); return
@@ -177,7 +198,7 @@ def streaming(credentials, coins, queries, refresh, path, realtime=False, logTra
         # Start streaming -----------------------------
         try:
             print("Streaming Now...")
-            listener = CoinListener(auth, coins, queries, refresh, path, realtime, logTracker, logTweets, logSentiment, debug)
+            listener = CoinListener(auth, coins, queries, refresh, path, realtime, logTracker, logTweets, indexTweets, logSentiment, debug)
             stream = tweepy.Stream(auth, listener)
             stream.filter(track=queries)
 

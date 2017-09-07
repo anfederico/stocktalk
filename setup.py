@@ -28,13 +28,13 @@ setup(
     zip_safe=False,
     packages=find_packages('stocktalk'),
     install_requires=[
+        'pytz',
         'bokeh>=0.12.4',
         'nltk>=3.2.2',
         'tornado>=4.4.2',
         'tweepy>=3.5.0',
         'twython>=3.4.0',
-        'configargparse'
-    ],
-    entry_points={
-    }
+        'configargparse',
+        'elasticsearch'
+    ]
 )

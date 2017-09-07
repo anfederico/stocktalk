@@ -187,4 +187,4 @@ print(sentiment(textThree))
 ##### Kibana and Elasticsearch Integration
 
 ![kibana_1](media/kibana_1.png)
-![kibana_2](media/kibana_1.png)
+![kibana_2](media/kibana_2.png)

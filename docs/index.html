@@ -7,228 +7,75 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/plottable.js/1.6.1/plottable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>        
+    <script src="js/helpers.js"></script>
+    <script src="js/charting.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plottable.js/1.6.1/plottable.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css">
   </head>
   <body>
+    <br>
     <div class="ui padded center aligned grid">
-      <div class="column">
-        <br><br>
-        
+      <div class="column" style="height:600px">
+        <div class="ui tiny header">Volume</div>
         <div class="ui icon buttons" style="margin-right:20px">
-          <button data-n="30" data-tf="m" class="ui basic button tf">30 m</button>
-          <button data-n="1"  data-tf="h" class="ui basic button tf">1 h</button>
-          <button data-n="4"  data-tf="h" class="ui basic button tf">4 h</button>
-          <button data-n="12" data-tf="h" class="ui basic button tf">12 h</button>
-          <button data-n="1"  data-tf="d" class="ui basic button tf">1 d</button>
-          <button data-n="3"  data-tf="d" class="ui basic button tf">3 d</button>
-          <button data-n="0"  data-tf="r" class="ui basic button tf">Reset</button>
+          <button data-n="30" data-tf="m" class="ui basic button tf volume">30 m</button>
+          <button data-n="1"  data-tf="h" class="ui basic button tf volume">1 h</button>
+          <button data-n="4"  data-tf="h" class="ui basic button tf volume">4 h</button>
+          <button data-n="12" data-tf="h" class="ui basic button tf volume">12 h</button>
+          <button data-n="1"  data-tf="d" class="ui basic button tf volume">1 d</button>
+          <button data-n="3"  data-tf="d" class="ui basic button tf volume">3 d</button>
+          <button data-n="0"  data-tf="r" class="ui basic button tf volume">Reset</button>
         </div>
-        
-        <div class="ui dropdown query">
+        <div class="ui dropdown volume query">
           <div class="text"></div>
           <i class="dropdown icon"></i>
         </div>
-
-        <br><br>
-
-        <svg id="volume" style="display:block;margin:auto;width:75%;height:75%"></svg>
+        <div id="volume-placeholder"></div>
       </div>
     </div>
-
-
-<script>
-function add_chart(data) {
-    var xScale = new Plottable.Scales.Time();
-    var xAxis = new Plottable.Axes.Numeric(xScale, "bottom");
-    xAxis.formatter(Plottable.Formatters.multiTime());
-    var yScale = new Plottable.Scales.Linear();
-    var yAxis = new Plottable.Axes.Numeric(yScale, "left");
-    var colorScale = new Plottable.Scales.Color();
-
-    var series1 = new Plottable.Dataset(data, { name: "series1" });
-
-    var plot = new Plottable.Plots.Line();
-    plot.x(function(d) { return d.x; }, xScale).y(function(d) { return d.y; }, yScale);
-    plot.attr("stroke", function(d, i, dataset) { return dataset.metadata().name; }, colorScale);
-    plot.addDataset(series1)
-    plot.autorangeMode("y");
-
-    var sparklineXScale = new Plottable.Scales.Time();
-    var sparklineXAxis = new Plottable.Axes.Time(sparklineXScale, "bottom");
-    var sparklineYScale = new Plottable.Scales.Linear();
-    var sparkline = new Plottable.Plots.Line();
-    sparkline.x(function(d) { return d.x; }, sparklineXScale).y(function(d) { return d.y; }, sparklineYScale);
-    sparkline.attr("stroke", function(d, i, dataset) { return dataset.metadata().name; }, colorScale);
-    sparkline.addDataset(series1);
-
-    var dragBox = new Plottable.Components.XDragBoxLayer();
-    dragBox.resizable(true);
-    dragBox.onDrag(function(bounds) {
-      var min = sparklineXScale.invert(bounds.topLeft.x);
-      var max = sparklineXScale.invert(bounds.bottomRight.x);
-      xScale.domain([min, max]);
-    });
-    dragBox.onDragEnd(function(bounds) {
-      if (bounds.topLeft.x === bounds.bottomRight.x) {
-        xScale.domain(sparklineXScale.domain());
-      }
-    });
-    xScale.onUpdate(function() {
-      dragBox.boxVisible(true);
-      var xDomain = xScale.domain();
-      dragBox.bounds({
-        topLeft: { x: sparklineXScale.scale(xDomain[0]), y: null },
-        bottomRight: { x: sparklineXScale.scale(xDomain[1]), y: null }
-      });
-    });
-    var miniChart = new Plottable.Components.Group([sparkline, dragBox]);
-
-    var pzi = new Plottable.Interactions.PanZoom(xScale, null);
-    pzi.attachTo(plot);
-
-    var output = d3.select("#hoverFeedback");
-    var outputDefaultText = "Closest:"
-    output.text(outputDefaultText);
-
-    var chart = new Plottable.Components.Table([
-      [yAxis, plot          ],
-      [null , xAxis         ],
-      [null , miniChart     ],
-      [null , sparklineXAxis]
-    ]);
-    chart.rowWeight(2, 0.2);
-    chart.renderTo("#volume");
-
-    var crosshair = createCrosshair(plot);
-    var pointer = new Plottable.Interactions.Pointer();
-    pointer.onPointerMove(function(p) {
-      var nearestEntity = plot.entityNearest(p);
-      if (nearestEntity.datum == null) {
-        return;
-      }
-      crosshair.drawAt(nearestEntity.position);
-      var datum = nearestEntity.datum;
-      output.text("Closest: (" + datum.x.toLocaleString() + ", " + datum.y.toFixed(2) + ")");
-    });
-    pointer.onPointerExit(function() {
-      crosshair.hide();
-      output.text(outputDefaultText);
-    });
-    pointer.attachTo(plot);
-
-    function createCrosshair(plot) {
-      var crosshair = {};
-      var crosshairContainer = plot.foreground().append("g").style("visibility", "hidden");
-      crosshair.vLine = crosshairContainer.append("line")
-                        .attr("stroke", "black")
-                        .attr("y1", 0)
-                        .attr("y2", plot.height());
-      crosshair.circle = crosshairContainer.append("circle")
-                        .attr("stroke", "black")
-                        .attr("fill", "white")
-                        .attr("r", 3);
-      crosshair.drawAt = function(p) {
-        crosshair.vLine.attr({
-          x1: p.x,
-          x2: p.x
-        });
-        crosshair.circle.attr({
-          cx: p.x,
-          cy: p.y
-        });
-        crosshairContainer.style("visibility", "visible");
-      }
-      crosshair.hide = function() {
-        crosshairContainer.style("visibility", "hidden");
-      }
-      return crosshair;
-    }
-}    
-
-</script>
-
-<script>
-function makeSeriesData(n, startDate) {
-  startDate = startDate || new Date();
-  var startYear = startDate.getUTCFullYear();
-  var startMonth = startDate.getUTCMonth();
-  var startDay = startDate.getUTCDate();
-  var toReturn = new Array(n);
-  for (var i = 0; i < n; i++) {
-    toReturn[i] = {
-      x: new Date(Date.UTC(startYear, startMonth, startDay + i/100)),
-      y: i > 0 ? toReturn[i - 1].y + Math.random() * 2 - 1 : Math.random() * 5
-    };
-  };
-  return toReturn;
-}
-</script>
-
-
-<script>
-
-function sum(array) {
-    total = 0;
-    for (var i = 0; i < array.length; i++) {
-      total += array[i]
-    }
-    return total;
-}
-
-function ms(n, tf) {
-    if (tf == 's') {
-        return n*1000
-    }
-    if (tf == 'm') {
-        return n*60*1000
-    }
-    if (tf == 'h') {
-        return n*60*60*1000
-    }
-    if (tf == 'd') {
-        return n*24*60*60*1000
-    }
-    if (tf == 'w') {
-        return n*7*24*60*60*1000
-    }
-}
-
-function resample(data, n, tf) {
-    resampled = []
-    for (var i = 0; i < data.length; i++) { 
-        aggregated_stamps = [data[i]['x']]
-        aggregated_values = [data[i]['y']]
-        try {
-            while (data[i+1]['x'].getTime() < aggregated_stamps[0].getTime()+ms(n, tf)) {
-                aggregated_stamps.push(data[i+1]['x'])
-                aggregated_values.push(data[i+1]['y'])
-                i ++
-                if (i > data.length) {
-                    break
-                }
-            }
-        } catch(TypeError) {
-            resampled.push({'x': aggregated_stamps[0], 'y': sum(aggregated_values)})
-            break
-        }
-        resampled.push({'x': aggregated_stamps[0], 'y': sum(aggregated_values)})
-    }
-    return resampled
-}
-
-
-</script>
-
+    <div class="ui padded center aligned grid">
+      <div class="column" style="height:600px">
+        <div class="ui tiny header">Sentiment</div>
+        <div class="ui icon buttons" style="margin-right:20px">
+          <button data-n="30" data-tf="m" class="ui basic button tf sentiment">30 m</button>
+          <button data-n="1"  data-tf="h" class="ui basic button tf sentiment">1 h</button>
+          <button data-n="4"  data-tf="h" class="ui basic button tf sentiment">4 h</button>
+          <button data-n="12" data-tf="h" class="ui basic button tf sentiment">12 h</button>
+          <button data-n="1"  data-tf="d" class="ui basic button tf sentiment">1 d</button>
+          <button data-n="3"  data-tf="d" class="ui basic button tf sentiment">3 d</button>
+          <button data-n="0"  data-tf="r" class="ui basic button tf sentiment">Reset</button>
+        </div>
+        <div class="ui dropdown sentiment query">
+          <div class="text"></div>
+          <i class="dropdown icon"></i>
+        </div>
+        <div id="sentiment-placeholder"></div>
+      </div>
+    </div>
+  </body>
+</html>
 
 <script>
 /*
 The first thing that happens
 */
-var selected_data
-var data = {'ETH': makeSeriesData(100),
-            'LTC': makeSeriesData(100),
-            'BTC': makeSeriesData(100)}
+var selected_volume
+var volume = {'ETH': randomVolume(2000),
+              'LTC': randomVolume(2000),
+              'BTC': randomVolume(2000),
+              'XRP': randomVolume(2000),
+              'XLM': randomVolume(2000)}
+selected_volume = volume[Object.keys(volume)[0]]
+newChart(selected_volume, 'volume')
+
+var selected_sentiment
+var sentiment = {'ETH': randomSentiment(2000),
+                 'LTC': randomSentiment(2000),
+                 'BTC': randomSentiment(2000),
+                 'XRP': randomSentiment(2000),
+                 'XLM': randomSentiment(2000)}
+selected_sentiment = sentiment[Object.keys(sentiment)[0]]
+newChart(selected_sentiment, 'sentiment')
 
 /*
 Initializes the dropdown options and updates with the selected
@@ -236,40 +83,67 @@ dataset whenever a change is detected. This also ends up initializing
 the chart data as a change is detected when instanced.
 */
 
-selection = []
-queries = Object.keys(data)
-for (var i = 0; i < queries.length; i++) {
-    selection.push({name: queries[i], value: queries[i]})
+// ------------------ //
+//   HANDLING VOLUME  //
+// ------------------ //
+volume_selection = []
+voume_queries = Object.keys(volume)
+for (var i = 0; i < voume_queries.length; i++) {
+    volume_selection.push({name: voume_queries[i], value: voume_queries[i]})
 }
-selection[0]['selected'] = true;
-$('.ui.dropdown').dropdown({
-  values: selection,
+volume_selection[0]['selected'] = true;
+$('.ui.dropdown.volume').dropdown({
+  values: volume_selection,
   onChange: function(value) {
-    if (typeof(data[value]) != 'undefined') {
-      $("g").empty();
-      selected_data = data[value]
-      add_chart(selected_data)
+    if (typeof(volume[value]) != 'undefined') {
+      $("#volume-placeholder").empty();
+      selected_volume = volume[value]
+      newChart(selected_volume, 'volume')
     }
   }
 });
-
-$(document).on("click", ".tf", function() {
+$(document).on("click", ".tf.volume", function() {
     n = $(this).attr('data-n')
     tf = $(this).attr('data-tf')
     if (tf == 'r') {
-        resampled_data = selected_data
+        resampled_data = selected_volume
     }
     else {
-        resampled_data = resample(selected_data, n ,tf)
+        resampled_data = resample(selected_volume, n, tf, sum)
     }
-    $( "g" ).empty();
-    add_chart(resampled_data)
+    $("#volume-placeholder").empty();
+    newChart(resampled_data, 'volume')
+});
+
+// ------------------ //
+// HANDLING SENTIMENT //
+// ------------------ //
+sentiment_selection = []
+sentiment_queries = Object.keys(sentiment)
+for (var i = 0; i < sentiment_queries.length; i++) {
+    sentiment_selection.push({name: sentiment_queries[i], value: sentiment_queries[i]})
+}
+sentiment_selection[0]['selected'] = true;
+$('.ui.dropdown.sentiment').dropdown({
+  values: sentiment_selection,
+  onChange: function(value) {
+    if (typeof(sentiment[value]) != 'undefined') {
+      $("#sentiment-placeholder").empty();
+      selected_sentiment = sentiment[value]
+      newChart(selected_sentiment, 'sentiment')
+    }
+  }
+});
+$(document).on("click", ".tf.sentiment", function() {
+    n = $(this).attr('data-n')
+    tf = $(this).attr('data-tf')
+    if (tf == 'r') {
+        resampled_data = selected_sentiment
+    }
+    else {
+        resampled_data = resample(selected_sentiment, n, tf, avg)
+    }
+    $("#sentiment-placeholder").empty();
+    newChart(resampled_data, 'sentiment')
 });
 </script>
-
-  </body>
-</html>
-
-
-
-

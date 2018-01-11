@@ -128,7 +128,7 @@ class Listener(tweepy.StreamListener):
  
 # Streaming --------------------------------------------------
 
-def stream(credentials, queries, refresh, sentiment=False, debug=False):
+def streamer(credentials, queries, refresh, sentiment=False, debug=False):
     keywords = [i for j in queries.values() for i in j]
 
     # User Error Checks

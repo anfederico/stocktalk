@@ -1,4 +1,4 @@
-from scripts import settings
+from scripts import settings, streaming
 
 # Query keys categorize tweets
 # Each key or category corresponds to an array of keywords

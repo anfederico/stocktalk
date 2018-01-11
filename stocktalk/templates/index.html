@@ -1,0 +1,170 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Anthony Federico">
+    <title>Stocktalk</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plottable.js/1.6.1/plottable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>        
+    <script src="../static/js/helpers.js"></script>
+    <script src="../static/js/charting.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plottable.js/1.6.1/plottable.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css">
+  </head>
+  <body>
+    <br>
+    <div class="ui padded center aligned grid">
+      <div class="column" style="height:600px">
+        <div class="ui tiny header">Volume</div>
+        <div class="ui icon buttons" style="margin-right:20px">
+          <button data-n="30" data-tf="m" class="ui basic button tf volume">30 m</button>
+          <button data-n="1"  data-tf="h" class="ui basic button tf volume">1 h</button>
+          <button data-n="4"  data-tf="h" class="ui basic button tf volume">4 h</button>
+          <button data-n="12" data-tf="h" class="ui basic button tf volume">12 h</button>
+          <button data-n="1"  data-tf="d" class="ui basic button tf volume">1 d</button>
+          <button data-n="3"  data-tf="d" class="ui basic button tf volume">3 d</button>
+          <button data-n="0"  data-tf="r" class="ui basic button tf volume">Reset</button>
+        </div>
+        <div class="ui dropdown volume query">
+          <div class="text"></div>
+          <i class="dropdown icon"></i>
+        </div>
+        <div id="volume-placeholder"></div>
+      </div>
+    </div>
+    <div class="ui padded center aligned grid">
+      <div class="column" style="height:600px">
+        <div class="ui tiny header">Sentiment</div>
+        <div class="ui icon buttons" style="margin-right:20px">
+          <button data-n="30" data-tf="m" class="ui basic button tf sentiment">30 m</button>
+          <button data-n="1"  data-tf="h" class="ui basic button tf sentiment">1 h</button>
+          <button data-n="4"  data-tf="h" class="ui basic button tf sentiment">4 h</button>
+          <button data-n="12" data-tf="h" class="ui basic button tf sentiment">12 h</button>
+          <button data-n="1"  data-tf="d" class="ui basic button tf sentiment">1 d</button>
+          <button data-n="3"  data-tf="d" class="ui basic button tf sentiment">3 d</button>
+          <button data-n="0"  data-tf="r" class="ui basic button tf sentiment">Reset</button>
+        </div>
+        <div class="ui dropdown sentiment query">
+          <div class="text"></div>
+          <i class="dropdown icon"></i>
+        </div>
+        <div id="sentiment-placeholder"></div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+/*
+- Grab the data passed over from the flask application
+- Both volume and sentiment have the following format
+  {ETH: [{x: 12/01/24 10:52:42, y: 603}, 
+         {x: 12/01/24 11:14:49, y: 423},
+         {x: 12/01/24 11:35:45, y: 552},
+         ...                           ]
+
+   IOTA: Array(64), 
+   LSK:  Array(64), 
+   QTUM: Array(64), 
+   REQ:  Array(64)}
+*/
+
+var volume = {{ v|tojson }}
+// Converts string dates into Date objects
+queries = Object.keys(volume)
+for (var i = 0; i < queries.length; i++) {
+  query = queries[i]
+  for (var j = 0; j < volume[query].length; j++) {
+    volume[query][j]['x'] = new Date(volume[query][j]['x'])
+  }
+}
+
+var sentiment = {{ s|tojson }} 
+// Converts string dates into Date objects
+queries = Object.keys(sentiment)
+for (var i = 0; i < queries.length; i++) {
+  query = queries[i]
+  for (var j = 0; j < sentiment[query].length; j++) {
+    sentiment[query][j]['x'] = new Date(sentiment[query][j]['x'])
+  }
+}
+
+// First query in volume is added to the chart
+var selected_volume
+selected_volume = volume[Object.keys(volume)[0]]
+newChart(selected_volume, 'volume')
+
+// First query in sentiment is added to the chart
+var selected_sentiment
+selected_sentiment = sentiment[Object.keys(sentiment)[0]]
+newChart(selected_sentiment, 'sentiment')
+
+/*
+Initializes the dropdown options and updates with the selected
+dataset whenever a change is detected. This also ends up initializing
+the chart data as a change is detected when instanced.
+*/
+// ------------------ //
+//   HANDLING VOLUME  //
+// ------------------ //
+volume_selection = []
+voume_queries = Object.keys(volume)
+for (var i = 0; i < voume_queries.length; i++) {
+    volume_selection.push({name: voume_queries[i], value: voume_queries[i]})
+}
+volume_selection[0]['selected'] = true;
+$('.ui.dropdown.volume').dropdown({
+  values: volume_selection,
+  onChange: function(value) {
+    if (typeof(volume[value]) != 'undefined') {
+      $("#volume-placeholder").empty();
+      selected_volume = volume[value]
+      newChart(selected_volume, 'volume')
+    }
+  }
+});
+$(document).on("click", ".tf.volume", function() {
+    n = $(this).attr('data-n')
+    tf = $(this).attr('data-tf')
+    if (tf == 'r') {
+        resampled_data = selected_volume
+    }
+    else {
+        resampled_data = resample(selected_volume, n, tf, sum)
+    }
+    $("#volume-placeholder").empty();
+    newChart(resampled_data, 'volume')
+});
+// ------------------ //
+// HANDLING SENTIMENT //
+// ------------------ //
+sentiment_selection = []
+sentiment_queries = Object.keys(sentiment)
+for (var i = 0; i < sentiment_queries.length; i++) {
+    sentiment_selection.push({name: sentiment_queries[i], value: sentiment_queries[i]})
+}
+sentiment_selection[0]['selected'] = true;
+$('.ui.dropdown.sentiment').dropdown({
+  values: sentiment_selection,
+  onChange: function(value) {
+    if (typeof(sentiment[value]) != 'undefined') {
+      $("#sentiment-placeholder").empty();
+      selected_sentiment = sentiment[value]
+      newChart(selected_sentiment, 'sentiment')
+    }
+  }
+});
+$(document).on("click", ".tf.sentiment", function() {
+    n = $(this).attr('data-n')
+    tf = $(this).attr('data-tf')
+    if (tf == 'r') {
+        resampled_data = selected_sentiment
+    }
+    else {
+        resampled_data = resample(selected_sentiment, n, tf, avg)
+    }
+    $("#sentiment-placeholder").empty();
+    newChart(resampled_data, 'sentiment')
+});
+</script>

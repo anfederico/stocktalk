@@ -1,163 +1,129 @@
-<p align="center"><img src="https://raw.githubusercontent.com/Crypto-AI/Stocktalk/master/media/Design.png" width=60%></p>
+<p align="center"><img src="https://raw.githubusercontent.com/anfederico/Stocktalk/master/media/Design.png" width=60%></p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![PyPI version](https://badge.fury.io/py/stocktalk.svg)](https://badge.fury.io/py/stocktalk)
-[![Build Status](https://travis-ci.org/Crypto-AI/Stocktalk.svg?branch=master)](https://travis-ci.org/Crypto-AI/Stocktalk)
+[![Build Status](https://travis-ci.org/anfederico/Stocktalk.svg?branch=master)](https://travis-ci.org/anfederico/Stocktalk)
 ![Python](https://img.shields.io/badge/python-v2.7%20%2F%20v3.6-blue.svg)
 ![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
-[![GitHub Issues](https://img.shields.io/github/issues/Crypto-AI/Stocktalk.svg)](https://github.com/Crypto-AI/stocktalk/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/anfederico/Stocktalk.svg)](https://github.com/anfederico/stocktalk/issues)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## Quickstart
-#### Track tweet volume and sentiment in realtime
-```python
-from stocktalk import streaming, visualize
+## Purpose
+*Stocktalk is a visualization tool that tracks tweet volume and sentiment on Twitter, given a series of queries.*
 
-streaming(credentials, 'TSLA', ['TSLA', 'Tesla'], 30, path, realtime=True, logSentiment=True)
-visualize('TSLA', 30, path)
+*It does this by opening a local websocket with Twitter and pulling tweets that contain user-specified keywords. For example, I can tell Stocktalk to grab all tweets that mention Ethereum and periodically tally volume and measure average sentiment every 15 minutes.*
+
+*It will then record this data continuously and update an online database that can be used to visualize the timeseries data via an interactive Flask-based web application.*
+
+## Demo
+[https://anfederico.github.io/Stocktalk/](https://anfederico.github.io/Stocktalk/)
+
+# Prerequisites
+> Stocktalk requires API credentials with Twitter and Mlab
+
+#### Twitter Steps (Creating an application)
+1. Sign into Twitter at [apps.twitter.com](apps.twitter.com)
+2. Create a new application and fill out details
+3. Generate an access token
+4. Save the following information
+	- Consumer Key
+	- Consumer Secret
+	- Access Token
+	- Access Token Secret
+
+#### Mlab Steps (Setting up an online database)
+1. Make an account at [https://mlab.com](https://mlab.com)
+2. Create a new deployment in sandbox mode
+3. Add a database user to your deployment
+4. Save the following information
+	- Mongo deployment server
+	- Mongo deployment id
+	- Mongo deployment client
+	- Deployment user
+	- Deployment pass
+
+## Download
+```bash
+# Clone repository and install dependencies
+$ git clone https://github.com/anfederico/Stocktalk
+$ pip install -r Stocktalk/requirements.txt
+
+# Install natural language toolkit sentiment corpus
+$ python -m nltk.downloader vader_lexicon
 ```
 
-<img src="https://raw.githubusercontent.com/Crypto-AI/Stocktalk/master/media/Demo.gif" width=50%>
-
-## Content
-- [Install](#install)
-- [Download Corpus](#download-corpus)
-- [Code Examples](#code-examples)
-	* [Twitter Streaming](#twitter-streaming)
-	* [Realtime Visualization](#realtime-visualization)
-- [Major Features](#major-features)
-	* [Debugging Mode](#debugging-mode)
-	* [Tracker Log Format](#tracker-log-format)
-	* [Tweets Log Format](#tweets-log-format)
-- [Underlying Features](#underlying-features)
-	* [Text Processing](#text-processing)
-	* [Sentiment Analysis](#sentiment-analysis)
-
-## Install
-```python
-pip install stocktalk
+## Edit Settings
 ```
-
-## Download Corpus
+/stocktalk
+└── /scripts
+    └── settings.py
+```
 ```python
-stocktalk-corpus
-or
-python -m nltk.downloader vader_lexicon
+# Mongo
+mongo_server    = 'ds254236.mlab.com'
+mongo_id        =  54236
+mongo_client    = 'stocktalk'
+mongo_user      = 'username'
+mongo_pass      = 'password'
+
+# Twitter
+api_key             = ''
+api_secret          = ''
+access_token        = ''
+access_token_secret = ''
+credentials = [api_key, api_secret, access_token, access_token_secret]
 ```
 
 ## Code Examples
 #### Twitter Streaming
+> This file opens the websocket and writes to the online databse until manually interrupted
+```
+/stocktalk
+└── listen.py
+
+$ python listen.py
+```
 ```python
-from stocktalk import streaming
+from scripts import settings
 
-# Credentials to access Twitter API 
-API_KEY = 'XXXXXXXXXX'
-API_SECRET = 'XXXXXXXXXX'
-ACCESS_TOKEN = 'XXXXXXXXXX'
-ACCESS_TOKEN_SECRET = 'XXXXXXXXXX'
-credentials = [API_KEY, API_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET]
+# Each key or category corresponds to an array of keywords used to pull tweets
+queries = {'ETH': ['ETH', 'Ethereum'],
+           'LTC': ['LTC', 'Litecoin'],
+           'BTC': ['BTC', 'Bitcoin'],
+           'XRP': ['XRP', 'Ripple'],
+           'XLM': ['XLM', 'Stellar']}
 
-# First element must be ticker/name, proceeding elements are extra queries
-TSLA = ['TSLA', 'Tesla']
-SNAP = ['SNAP', 'Snapchat']
-AAPL = ['AAPL', 'Apple']
-AMZN = ['AMZN', 'Amazon']
+# Aggregate volume and sentiment every 15 minutes
+refresh = 15*60
 
-# Variables
-tickers = [TSLA,SNAP,AAPL,AMZN]  # Used for identification purposes
-queries =  TSLA+SNAP+AAPL+AMZN   # Filters tweets containing one or more query 
-refresh = 30                     # Process and log data every 30 seconds
-
-# Create a folder to collect logs and temporary files
-path = "/Users/Anthony/Desktop/Data/"
-
-streaming(credentials, tickers, queries, refresh, path, \
-realtime=True, logTracker=True, logTweets=True, logSentiment=True, debug=True)
+streaming(settings.credentials, 
+          queries, 
+          refresh, 
+          sentiment=True, 
+          debug=True)
 ```
 
 #### Realtime Visualization
-```python
-from stocktalk import visualize
-
-# Make sure these variables are consistent with streaming.py
-tickers = ['TSLA','SNAP','AAPL','AMZN']
-refresh = 30
-path = "/Users/Anthony/Desktop/Data/"
-
-visualize(tickers, refresh, path)
-
-'''
-Steps to run local bokeh server
-1. Make sure streaming.py is running...
-2. Traverse in console to the directory containing visualize.py
-3. python -m bokeh serve --show visualize.py
-'''
-
-# Note: Volume is the thick blue line while sentiment is the thin white line
+> This file initiates a local web-application which pulls data from the online database
 ```
+/stocktalk
+└── app.py
 
-<p align="center"><img src="https://raw.githubusercontent.com/Crypto-AI/Stocktalk/master/media/Demo.png"></p>
-
-## Major Features
-##### Debugging Mode
-```text
-Streaming Now...
-
----10:00:00---
-TSLA Volume: 25
-TSLA Sentiment: 0.29
-SNAP Volume: 218
-SNAP Sentiment: 0.03
-AAPL Volume: 63
-AAPL Sentiment: 0.14
-AMZN Volume: 64
-AMZN Sentiment: 0.34
-
----10:00:30---
-TSLA Volume: 23
-TSLA Sentiment: -0.05
-SNAP Volume: 298
-SNAP Sentiment: 0.02
-AAPL Volume: 112
-AAPL Sentiment: 0.01
-AMZN Volume: 150
-AMZN Sentiment: 0.11
-```
-
-##### Tracker Log Format
-```text
-TSLA_Tracker.txt
-datetime,volume,sentiment,duration
-03/01/2017 10:30:00,22,0.26,30
-03/01/2017 10:30:30,27,0.33,30
-03/01/2017 10:31:00,24,0.23,30
-03/01/2017 10:31:30,23,0.25,30
-03/01/2017 10:32:00,25,0.18,30
-```
-
-##### Tweets Log Format
-```text
-TSLA_Tweets.txt
-datetime,tweet,sentiment
-03/01/2017 10:30:02,#Tesla zeroing in market with strong relations,0.54
-03/01/2017 10:30:03,$TSLA needs 8 Billion for Supercharger network,0.0
-03/01/2017 10:30:03,#Tesla grossing high yet still losing money,-0.32
-03/01/2017 10:30:03,Tesla's soon to be as affordable as gas-powered cars,0.11 
-03/01/2017 10:30:05,The technical reason why Tesla shares could soon rise,0.42 
+$ python app.py
 ```
 
 ## Underlying Features
 ##### Text Processing
 ```python
-textOne = "@TeslaMotors shares jump as shipments more than double! #winning"
-print(process(textOne))
+t1 = "@TeslaMotors shares jump as shipments more than double! #winning"
+print(process(t1))
 
-textTwo = "Tesla announces its best sales quarter: http://trib.al/RbTxvSu $TSLA" 
-print(process(textTwo))
+t2 = "Tesla announces its best sales quarter: http://trib.al/RbTxvSu $TSLA" 
+print(process(t2))
 
-textThree = "Tesla $TSLA reports deliveries of 24500, above most views."
-print(process(textThree))
+t3 = "Tesla $TSLA reports deliveries of 24500, above most views."
+print(process(t3))
 ```
 
 ```text
@@ -168,14 +134,14 @@ tesla reports deliveries of number above most views
 
 ##### Sentiment Analysis
 ```python
-textOne = "shares jump as shipments more than double winning"
-print(sentiment(textOne))
+t1 = "shares jump as shipments more than double winning"
+print(sentiment(t1))
 
-textTwo = "tesla reports deliveries of number above most views"
-print(sentiment(textTwo))
+t2 = "tesla reports deliveries of number above most views"
+print(sentiment(t2))
 
-textThree = "not looking good for tesla competition on the rise"
-print(sentiment(textThree))
+t3 = "not looking good for tesla competition on the rise"
+print(sentiment(t3))
 ```
 
 ```text

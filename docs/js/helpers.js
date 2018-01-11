@@ -4,10 +4,12 @@ function randomVolume(n, startDate) {
   var startMonth = startDate.getUTCMonth();
   var startDay = startDate.getUTCDate();
   var toReturn = new Array(n);
+  var base = Math.random()*100
   for (var i = 0; i < n; i++) {
+    draw = Math.random()
     toReturn[i] = {
-      x: new Date(Date.UTC(startYear, startMonth, startDay + i/100)),
-      y: Math.random() * 100 + Math.random() * 50 + Math.random() * 30
+      x: new Date(Date.UTC(startYear, startMonth, startDay + i/60)),
+      y: draw > 0.9 && draw < 0.92 ? base + Math.random() * 100 : base +  Math.random() * 30
     };
   };
   return toReturn;
@@ -21,8 +23,8 @@ function randomSentiment(n, startDate) {
   var toReturn = new Array(n);
   for (var i = 0; i < n; i++) {
     toReturn[i] = {
-      x: new Date(Date.UTC(startYear, startMonth, startDay + i/100)),
-      y: Math.random() > 0.5 ? Math.random() : -1 * Math.random()
+      x: new Date(Date.UTC(startYear, startMonth, startDay + i/60)),
+      y: Math.random() > 0.5 ? Math.random()/1.5 : -1 * Math.random()/1.5
     };
   };
   return toReturn;

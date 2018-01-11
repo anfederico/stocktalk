@@ -61,11 +61,11 @@ $ python -m nltk.downloader vader_lexicon
 ```
 ```python
 # Mongo
-mongo_server    = 'ds254236.mlab.com'
-mongo_id        =  54236
-mongo_client    = 'stocktalk'
-mongo_user      = 'username'
-mongo_pass      = 'password'
+mongo_server = 'ds254236.mlab.com'
+mongo_id     =  54236
+mongo_client = 'stocktalk'
+mongo_user   = 'username'
+mongo_pass   = 'password'
 
 # Twitter
 api_key             = ''

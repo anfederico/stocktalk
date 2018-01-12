@@ -97,11 +97,11 @@ queries = {'ETH': ['ETH', 'Ethereum'],
 # Aggregate volume and sentiment every 15 minutes
 refresh = 15*60
 
-streaming(settings.credentials, 
-          queries, 
-          refresh, 
-          sentiment=True, 
-          debug=True)
+streaming.streamer(settings.credentials, 
+                   queries, 
+                   refresh, 
+                   sentiment=True, 
+                   debug=True)
 ```
 
 #### Realtime Visualization
